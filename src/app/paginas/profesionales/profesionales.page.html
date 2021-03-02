@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>profesionales</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-grid>
+
+    <ion-row>
+
+
+      <ion-col *ngFor="let profesional of profesionals" size="12" size-md="3">
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>{{ profesional.id }}</ion-card-subtitle>
+            
+              <ion-card-title [routerLink]="['show', profesional.id]">
+                {{ profesional.nombre }}
+              </ion-card-title>
+            
+          </ion-card-header>
+          <ion-card-content>
+            <ul>
+              <li>
+                {{ profesional.c_clinica_id }}
+              </li>
+              <li>
+                {{ profesional.telefono }}
+              </li>
+              <li>
+                {{ profesional.correo }}
+              </li>
+              <li>
+                {{ profesional.localidad }}
+              </li>
+            </ul>
+            <div>
+              <ion-button color="primary" [routerLink]="['edit', profesional.id]">
+                Editar
+              </ion-button>
+              <ion-button color="danger" (click)="deleteProfesional(profesional.id)">
+                Eliminar
+              </ion-button>
+            </div>
+          </ion-card-content>
+
+
+        </ion-card>
+
+
+      </ion-col>
+
+
+    </ion-row>
+
+  </ion-grid>
+  <!-- fab placed to the bottom end -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="warning" routerLink="create" >
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

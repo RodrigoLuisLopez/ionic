@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Clinicas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-grid>
+
+    <ion-row>
+
+
+      <ion-col *ngFor="let clinica of clinicas" size="12" size-md="3">
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>{{ clinica.id }}</ion-card-subtitle>
+            
+              <ion-card-title [routerLink]="['show', clinica.id]">
+                {{ clinica.nombre }}
+              </ion-card-title>
+            
+          </ion-card-header>
+          <ion-card-content>
+            <ul>
+              <li>
+                {{ clinica.direccion }}
+              </li>
+              <li>
+                {{ clinica.telefono }}
+              </li>
+              <li>
+                {{ clinica.correo }}
+              </li>
+            </ul>
+            <div>
+              <ion-button color="primary" [routerLink]="['edit', clinica.id]">
+                Editar
+              </ion-button>
+              <ion-button color="danger" (click)="deleteClinica(clinica.id)">
+                Eliminar
+              </ion-button>
+            </div>
+          </ion-card-content>
+
+
+        </ion-card>
+
+
+      </ion-col>
+
+
+    </ion-row>
+
+  </ion-grid>
+  <!-- fab placed to the bottom end -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="warning" routerLink="create" >
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

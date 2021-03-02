@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/clinicas"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Clinica</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ clinica.nombre }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h2>{{ clinica.direccion }}</h2> <br>
+      <h2>{{ clinica.telefono }}</h2> <br>
+      <h2>{{ clinica.correo }}</h2> <br>
+    </ion-card-content>
+  </ion-card>
+
+
+</ion-content>

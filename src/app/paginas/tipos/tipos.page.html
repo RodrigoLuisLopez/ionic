@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>tipos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+
+    <ion-row>
+
+
+      <ion-col *ngFor="let tipo of tipos" size="12" size-md="3">
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>{{ tipo.id }}</ion-card-subtitle>
+            
+              <ion-card-title [routerLink]="['show', tipo.id]">
+                {{ tipo.nombre }}
+              </ion-card-title>
+            
+          </ion-card-header>
+          <ion-card-content>
+            {{ tipo.descripcion }}
+            <div>
+              <ion-button color="primary" [routerLink]="['edit', tipo.id]">
+                Editar
+              </ion-button>
+              <ion-button color="danger" (click)="deleteTipo(tipo.id)">
+                Eliminar
+              </ion-button>
+            </div>
+          </ion-card-content>
+
+
+        </ion-card>
+
+
+      </ion-col>
+
+
+    </ion-row>
+
+  </ion-grid>
+  <!-- fab placed to the bottom end -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="warning" routerLink="create" >
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+
+</ion-content>

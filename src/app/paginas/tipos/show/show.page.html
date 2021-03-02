@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tipos"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Tipo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>{{ tipo.id }}</ion-card-subtitle>
+      <ion-card-title>{{ tipo.nombre }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ tipo.descripcion }}
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

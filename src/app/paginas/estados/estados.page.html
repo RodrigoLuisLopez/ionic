@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Estados</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+
+    <ion-row>
+
+
+      <ion-col *ngFor="let estado of estados" size="12" size-md="3">
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>{{ estado.id }}</ion-card-subtitle>
+            
+              <ion-card-title [routerLink]="['show', estado.id]">
+                {{ estado.nombre }}
+              </ion-card-title>
+            
+          </ion-card-header>
+          <ion-card-content>
+            {{ estado.descripcion }}
+            <div>
+              <ion-button color="primary" [routerLink]="['edit', estado.id]">
+                Editar
+              </ion-button>
+              <ion-button color="danger" (click)="deleteEstado(estado.id)">
+                Eliminar
+              </ion-button>
+            </div>
+          </ion-card-content>
+
+
+        </ion-card>
+
+
+      </ion-col>
+
+
+    </ion-row>
+
+  </ion-grid>
+  <!-- fab placed to the bottom end -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="warning" routerLink="create" >
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+
+</ion-content>
