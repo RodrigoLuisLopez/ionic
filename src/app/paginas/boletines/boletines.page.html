@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+
+      <ion-menu-button color="primary" menu="first">
+
+      </ion-menu-button>
+
+    </ion-buttons>
+    <ion-title>Boletines</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-grid>
+
+    <ion-row>
+
+
+      <ion-col *ngFor="let boletin of boletines" size="12" size-md="3">
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>{{ boletin.id }}</ion-card-subtitle>
+            
+              <ion-card-title [routerLink]="['show', boletin.id]">
+                {{ boletin.titulo }}
+              </ion-card-title>
+            
+          </ion-card-header>
+          <ion-card-content>
+            <ul>
+              <li>
+                {{ boletin.subtitulo }}
+              </li>
+              <li>
+                {{ boletin.autor }}
+              </li>
+              <li>
+                {{ boletin.c_profesional_id }}
+              </li>
+              <li>
+                {{ boletin.contenido }}
+              </li>
+            </ul>
+            <div>
+              <ion-button color="primary" [routerLink]="['edit', boletin.id]">
+                Editar
+              </ion-button>
+              <ion-button color="danger" (click)="deleteBol(boletin.id)">
+                Eliminar
+              </ion-button>
+            </div>
+          </ion-card-content>
+
+
+        </ion-card>
+
+
+      </ion-col>
+
+
+    </ion-row>
+
+  </ion-grid>
+  <!-- fab placed to the bottom end -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="warning" routerLink="create" >
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

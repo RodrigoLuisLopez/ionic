@@ -47,6 +47,10 @@ updateProfesional(id:string, tipo : Profesional){
   return this.http.put<any>(`${this.API}/${id}`, tipo);
 }
 
+getClinicas(){
+  return this.http.get<any>('http://127.0.0.1:8000/api/c_clinicas');
+}
+
 }
 
 

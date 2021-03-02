@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+
+      <ion-menu-button color="primary" menu="first">
+
+      </ion-menu-button>
+
+    </ion-buttons>
+    <ion-title>Casos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-grid>
+
+    <ion-row>
+
+
+      <ion-col *ngFor="let caso of casos" size="12" size-md="3">
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>{{ caso.id }}</ion-card-subtitle>
+            
+              <ion-card-title [routerLink]="['show', caso.id]">
+                {{ caso.nombre }}
+              </ion-card-title>
+            
+          </ion-card-header>
+          <ion-card-content>
+            <ul>
+              <li>
+                {{ caso.c_estado_id }}
+              </li>
+              <li>
+                {{ caso.t_usuario_id }}
+              </li>
+              <li>
+                {{ caso.c_profesional_id }}
+              </li>
+              <li>
+                {{ caso.fecha }}
+              </li>
+              <li>
+                {{ caso.descripcion }}
+              </li>
+            </ul>
+            <div>
+              <ion-button color="primary" [routerLink]="['edit', caso.id]">
+                Editar
+              </ion-button>
+              <ion-button color="danger" (click)="deleteCa(caso.id)">
+                Eliminar
+              </ion-button>
+            </div>
+          </ion-card-content>
+
+
+        </ion-card>
+
+
+      </ion-col>
+
+
+    </ion-row>
+
+  </ion-grid>
+  <!-- fab placed to the bottom end -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="warning" routerLink="create" >
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

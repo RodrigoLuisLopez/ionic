@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/caso"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Casos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ caso.nombre }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h2>{{ caso.nombre }}</h2> <br>
+      <h2>{{ caso.fecha }}</h2> <br>
+      <h2>{{ caso.descripcion }}</h2> <br>
+      <h2>{{ caso.c_estado_id }}</h2> <br>
+      <h2>{{ caso.c_profesional_id }}</h2> <br>
+      <h2>{{ caso.t_usuario_id }}</h2> <br>
+    </ion-card-content>
+  </ion-card>
+
+
+</ion-content>

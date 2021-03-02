@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/estudiantes"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Estudiantes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ es.nombre }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h2>{{ es.c_clinica_id }}</h2> <br>
+      <h2>{{ es.c_profesional_id }}</h2> <br>
+      <h2>{{ es.telefono }}</h2> <br>
+      <h2>{{ es.correo }}</h2> <br>
+      <h2>{{ es.localidad }}</h2> <br>
+    </ion-card-content>
+  </ion-card>
+
+
+</ion-content>
+

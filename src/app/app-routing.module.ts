@@ -31,6 +31,22 @@ const routes: Routes = [
     path: 'profesionales',
     loadChildren: () => import('./paginas/profesionales/profesionales.module').then( m => m.ProfesionalesPageModule)
   },
+  {
+    path: 'usuarios',
+    loadChildren: () => import('./paginas/usuarios/usuarios.module').then( m => m.UsuariosPageModule)
+  },
+  {
+    path: 'estudiantes',
+    loadChildren: () => import('./paginas/estudiantes/estudiantes.module').then( m => m.EstudiantesPageModule)
+  },
+  {
+    path: 'casos',
+    loadChildren: () => import('./paginas/casos/casos.module').then( m => m.CasosPageModule)
+  },
+  {
+    path: 'boletines',
+    loadChildren: () => import('./paginas/boletines/boletines.module').then( m => m.BoletinesPageModule)
+  },
 ];
 
 @NgModule({

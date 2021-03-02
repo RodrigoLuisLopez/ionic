@@ -26,10 +26,16 @@ export class ProfesionalesPage implements OnInit {
   }
   
   profesionals : any=[];
+  clinicas : any=[];
 
   getProfesionals(){
 
     this.service.getProfesionals().subscribe(resp => {console.log(resp.data); this.profesionals = resp.data;});
+  }
+
+  getClinicas(){
+
+    this.service.getClinicas().subscribe(resp => {console.log(resp.data); this.clinicas = resp.data;});
   }
 
   async deleteProfesional(id){

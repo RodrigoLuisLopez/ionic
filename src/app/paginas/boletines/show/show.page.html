@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/boletines"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Boletines</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>{{ boletin.id }}</ion-card-subtitle>
+      
+        <ion-card-title>
+          {{ boletin.titulo }}
+        </ion-card-title>
+      
+    </ion-card-header>
+    <ion-card-content>
+      <ul>
+        <li>
+          {{ boletin.subtitulo }}
+        </li>
+        <li>
+          {{ boletin.autor }}
+        </li>
+        <li>
+          {{ boletin.c_profesional_id }}
+        </li>
+        <li>
+          {{ boletin.contenido }}
+        </li>
+      </ul>
+    </ion-card-content>
+
+
+  </ion-card>
+
+
+</ion-content>
+

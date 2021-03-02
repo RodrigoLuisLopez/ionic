@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+
+      <ion-menu-button color="primary" menu="first">
+
+      </ion-menu-button>
+
+    </ion-buttons>
+    <ion-title>Estudiantes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-grid>
+
+    <ion-row>
+
+
+      <ion-col *ngFor="let est of es" size="12" size-md="3">
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>{{ est.id }}</ion-card-subtitle>
+            
+              <ion-card-title [routerLink]="['show', est.id]">
+                {{ est.nombre }}
+              </ion-card-title>
+            
+          </ion-card-header>
+          <ion-card-content>
+            <ul>
+              <li>
+                {{ est.c_clinica_id }}
+              </li>
+              <li>
+                {{ est.c_profesional_id }}
+              </li>
+              <li>
+                {{ est.telefono }}
+              </li>
+              <li>
+                {{ est.correo }}
+              </li>
+              <li>
+                {{ est.localidad }}
+              </li>
+            </ul>
+            <div>
+              <ion-button color="primary" [routerLink]="['edit', est.id]">
+                Editar
+              </ion-button>
+              <ion-button color="danger" (click)="deleteEs(est.id)">
+                Eliminar
+              </ion-button>
+            </div>
+          </ion-card-content>
+
+
+        </ion-card>
+
+
+      </ion-col>
+
+
+    </ion-row>
+
+  </ion-grid>
+  <!-- fab placed to the bottom end -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="warning" routerLink="create" >
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
