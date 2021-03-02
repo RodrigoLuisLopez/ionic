@@ -32,7 +32,7 @@ export class ProfesionalesPage implements OnInit {
     this.service.getProfesionals().subscribe(resp => {console.log(resp.data); this.profesionals = resp.data;});
   }
 
-  async deleteProfeional(id){
+  async deleteProfesional(id){
 
     const alert = await this.alertController.create({
       header: "Eliminar",
