@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/caso"></ion-back-button>
+      <ion-back-button defaultHref="/casos"></ion-back-button>
     </ion-buttons>
     <ion-title>Casos</ion-title>
   </ion-toolbar>
@@ -9,7 +9,7 @@
 
 <ion-content>
   
-  <ion-card>
+  <ion-card *ngIf="caso">
     <ion-card-header>
       <ion-card-title>{{ caso.nombre }}</ion-card-title>
     </ion-card-header>

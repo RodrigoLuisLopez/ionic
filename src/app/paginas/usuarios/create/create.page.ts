@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UsuariosService, Usuario } from 'src/app/servicios/usuarios.service';
+import { Usuario } from 'src/app/interfaces/Usuarios.interface';
+import { LoadingService } from 'src/app/servicios/loading.service';
+import { UsuariosService} from 'src/app/servicios/usuarios.service';
 
 @Component({
   selector: 'app-create',
@@ -8,29 +10,35 @@ import { UsuariosService, Usuario } from 'src/app/servicios/usuarios.service';
   styleUrls: ['./create.page.scss'],
 })
 export class CreatePage implements OnInit {
-  editing = false;
-
-  usuario: Usuario = {
-    c_tipo_id: '',
-    nombre: '',
-    edad: '',
-    localidad: ''
-  }
-
+  
   constructor(
     private service: UsuariosService,
     private router: Router,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private loadservi: LoadingService
   ) { }
 
+
+  editing = false;
+  usuario: Usuario = {};
+  id: string = this.activateRoute.snapshot.paramMap.get('id');
+
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.mostrarLoading();
+    this.verDatos();
+  }
+
+
+  verDatos() {
     this.activateRoute.paramMap.subscribe((paramMap) => {
-      if (paramMap.get('id')) {
+      if (this.id) {
         this.editing = true;
-        this.service
-          .getUsuario(paramMap.get('id'))
-          .subscribe((res) => {
-            this.usuario = res.data;
+        this.service.getUsuario(this.id).subscribe((res) => {
+            this.usuario = res;
+            this.loadservi.loading.dismiss();
           });
 
       }
@@ -38,12 +46,7 @@ export class CreatePage implements OnInit {
   }
 
   saveUsuario() {
-    this.service.createUsuario(
-      this.usuario.c_tipo_id,
-      this.usuario.nombre, 
-      this.usuario.edad,
-      this.usuario.localidad
-      ).subscribe(
+    this.service.createUsuario(this.usuario).subscribe(
       (resp) => {
         this.router.navigate(['/usuarios']);
       },
@@ -52,15 +55,20 @@ export class CreatePage implements OnInit {
   }
 
   updateUsuario() {
-    this.service.updateUsuario(this.usuario.id, {
-      c_tipo_id:this.usuario.c_tipo_id,
-      nombre:this.usuario.nombre, 
-      edad:this.usuario.edad,
-      localidad:this.usuario.localidad
-    }).subscribe(
+    this.service.updateUsuario(this.usuario.id, this.usuario).subscribe(
       (resp) => { this.router.navigate(['/usuarios']) },
       (err) => console.error(err)
     );
   }
+
+
+
+  mostrarLoading(){
+    if(this.id){
+      this.loadservi.presentLoading('Cargando');
+    }
+  }
+
+
 
 }

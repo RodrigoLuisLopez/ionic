@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Usuario } from 'src/app/interfaces/Usuarios.interface';
+import { LoadingService } from 'src/app/servicios/loading.service';
 import { UsuariosService } from 'src/app/servicios/Usuarios.service';
 
 @Component({
@@ -13,26 +15,34 @@ export class UsuariosPage implements OnInit {
   constructor(
     public http : HttpClient,
     private service : UsuariosService,
-    private alertController :AlertController
+    private alertController :AlertController,
+    private loadservi: LoadingService
   ) { }
 
+  
+  usuarios : Usuario[];
+
   ngOnInit() {
-    this.getUsuarios();
   }
 
   ionViewWillEnter(){
+    this.mostrarloading();
     this.getUsuarios();
   }
   
-  usuarios : any=[];
 
   getUsuarios(){
+    this.service.getUsuarios().subscribe(resp => {
+      console.log(resp.data); 
+      this.usuarios = resp.data;
+      this.loadservi.loading.dismiss(); 
 
-    this.service.getUsuarios().subscribe(resp => {console.log(resp.data); this.usuarios = resp.data;});
+    });
+
   }
 
 
-  async deleteUsuarios(id){
+  async deleteUsuario(id){
 
     const alert = await this.alertController.create({
       header: "Eliminar",
@@ -43,7 +53,7 @@ export class UsuariosPage implements OnInit {
         handler: () =>{
           this.service.deleteUsuario(id).subscribe(
             (resp) => {
-              this.getUsuarios();
+              this.ionViewWillEnter();
             }, 
             (err) => console.error(err)
             );
@@ -53,6 +63,12 @@ export class UsuariosPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+
+  
+  mostrarloading(){
+    this.loadservi.presentLoading('Cargando');
   }
 
 }

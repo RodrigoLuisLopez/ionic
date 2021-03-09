@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Estado } from 'src/app/interfaces/Estados.interface';
 import { EstadosService } from 'src/app/servicios/estados.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
 
 @Component({
   selector: 'app-show',
@@ -8,26 +10,42 @@ import { EstadosService } from 'src/app/servicios/estados.service';
   styleUrls: ['./show.page.scss'],
 })
 export class ShowPage implements OnInit {
-
-  estado: any =[];
-  
-
   constructor(
     private service: EstadosService,
     private router: Router,
-    private activateRoute: ActivatedRoute) { }
+    private activateRoute: ActivatedRoute,
+    private loadservi: LoadingService
+    ) { }
+
+    
+  estado: Estado;
+  id: string = this.activateRoute.snapshot.paramMap.get('estadoid');
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.mostrarloading();
+    this.show();
+  }
+
+
+  show(){
     this.activateRoute.paramMap.subscribe((paramMap) => {
-      if (paramMap.get('estadoid')) {
-        this.service
-          .getEstado(paramMap.get('estadoid'))
-          .subscribe((res) => {
-            this.estado = res.data;
+      if (this.id) {
+        this.service.getEstado(this.id).subscribe((res) => {
+            this.estado = res;
+            this.loadservi.loading.dismiss(); 
           });
 
       }
     })
+   
+  }
+
+
+  mostrarloading(){
+    this.loadservi.presentLoading('Cargando');
   }
 
 

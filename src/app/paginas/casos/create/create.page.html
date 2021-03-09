@@ -19,33 +19,33 @@
             <ion-card-title>{{ editing ? 'Editar' : ' Nuevo' }} Casos</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-item>
+            <ion-item *ngIf="caso">
               <ion-label position="floating">Nombre del caso</ion-label>
               <ion-input [(ngModel)]="caso.nombre"></ion-input>
             </ion-item>
             
-            <ion-item>
+            <ion-item *ngIf="caso">
               <ion-label>MM DD YY</ion-label>
               <ion-datetime [(ngModel)]="caso.fecha"></ion-datetime>
             </ion-item>
             
-            <ion-item>
+            <ion-item *ngIf="caso">
               <ion-label position="floating">Descripcion</ion-label>
               <ion-input [(ngModel)]="caso.descripcion"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="caso">
               <ion-label position="floating">Profesional</ion-label>
               <ion-input [(ngModel)]="caso.c_profesional_id"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="caso">
               <ion-label position="floating">Usuario</ion-label>
               <ion-input [(ngModel)]="caso.t_usuario_id"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="caso">
               <ion-label position="floating">estado</ion-label>
               <ion-input [(ngModel)]="caso.c_estado_id"></ion-input>
             </ion-item>
-            <ion-button color="primary" expand="full" (click)="editing ? updateCa(nombre, fecha, descripcion,c_profesional_id,t_usuario_id,c_estado_id) : saveCa()">
+            <ion-button color="primary" expand="full" (click)="editing ? updateCa() : saveCa()">
               {{ editing ? 'Editar' : 'Guardar' }}
             </ion-button>
           </ion-card-content>

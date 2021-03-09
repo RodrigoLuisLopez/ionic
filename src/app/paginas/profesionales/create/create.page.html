@@ -19,27 +19,27 @@
             <ion-card-title>{{ editing ? 'Editar' : ' Nuevo' }} Profesional</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-item>
+            <ion-item *ngIf="profesional">
             <ion-label position="floating">Clinica</ion-label>
             <ion-input [(ngModel)]="profesional.c_clinica_id"></ion-input>
           </ion-item>
-            <ion-item>
+            <ion-item *ngIf="profesional">
               <ion-label position="floating">Profesional</ion-label>
               <ion-input [(ngModel)]="profesional.nombre"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="profesional">
               <ion-label position="floating">Telefono</ion-label>
               <ion-input [(ngModel)]="profesional.telefono"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="profesional">
               <ion-label position="floating">Correo</ion-label>
               <ion-input [(ngModel)]="profesional.correo"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="profesional">
               <ion-label position="floating">Localidad</ion-label>
               <ion-input [(ngModel)]="profesional.localidad"></ion-input>
             </ion-item>
-            <ion-button color="primary" expand="full" (click)="editing ? updateProfesional(c_clinica_id, nombre, telefono, correo,localidad) : saveProfesional()">
+            <ion-button color="primary" expand="full" (click)="editing ? updateProfesional() : saveProfesional()">
               {{ editing ? 'Editar' : 'Guardar' }}
             </ion-button>
           </ion-card-content>

@@ -9,16 +9,16 @@
 
 <ion-content>
   
-  <ion-card>
+  <ion-card *ngIf="estudiante">
     <ion-card-header>
-      <ion-card-title>{{ es.nombre }}</ion-card-title>
+      <ion-card-title>{{ estudiante.nombre }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <h2>{{ es.c_clinica_id }}</h2> <br>
-      <h2>{{ es.c_profesional_id }}</h2> <br>
-      <h2>{{ es.telefono }}</h2> <br>
-      <h2>{{ es.correo }}</h2> <br>
-      <h2>{{ es.localidad }}</h2> <br>
+      <h2>{{ estudiante.c_clinica_id }}</h2> <br>
+      <h2>{{ estudiante.c_profesional_id }}</h2> <br>
+      <h2>{{ estudiante.telefono }}</h2> <br>
+      <h2>{{ estudiante.correo }}</h2> <br>
+      <h2>{{ estudiante.localidad }}</h2> <br>
     </ion-card-content>
   </ion-card>
 

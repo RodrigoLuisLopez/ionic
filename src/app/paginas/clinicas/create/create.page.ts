@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ClinicasService, Clinica } from 'src/app/servicios/clinicas.service';
+import { Clinica } from 'src/app/interfaces/Clinicas.interface';
+import { ClinicasService} from 'src/app/servicios/clinicas.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
 
 @Component({
   selector: 'app-create',
@@ -8,29 +10,34 @@ import { ClinicasService, Clinica } from 'src/app/servicios/clinicas.service';
   styleUrls: ['./create.page.scss'],
 })
 export class CreatePage implements OnInit {
-
-  editing = false;
-  clinica: Clinica = {
-    nombre: '',
-    direccion: '',
-    telefono: '',
-    correo: ''
-  }
-
   constructor(
     private service: ClinicasService,
     private router: Router,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private loadservi: LoadingService
   ) { }
 
+  
+  editing = false;
+  clinica: Clinica = {};
+  id: string = this.activateRoute.snapshot.paramMap.get('clinicaid');
+
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.mostrarLoading();
+    this.verDatos();
+  }
+
+
+  verDatos() {
     this.activateRoute.paramMap.subscribe((paramMap) => {
-      if (paramMap.get('clinicaid')) {
+      if (this.id) {
         this.editing = true;
-        this.service
-          .getClinica(paramMap.get('clinicaid'))
-          .subscribe((res) => {
-            this.clinica = res.data;
+        this.service.getClinica(this.id).subscribe((res) => {
+            this.clinica = res;
+            this.loadservi.loading.dismiss();
           });
 
       }
@@ -38,10 +45,7 @@ export class CreatePage implements OnInit {
   }
 
   saveClinica() {
-    this.service.createClinica(this.clinica.nombre, 
-      this.clinica.direccion,
-      this.clinica.telefono,
-      this.clinica.correo).subscribe(
+    this.service.createClinica(this.clinica).subscribe(
       (resp) => {
         this.router.navigate(['/clinicas']);
       },
@@ -50,15 +54,18 @@ export class CreatePage implements OnInit {
   }
 
   updateClinica() {
-    this.service.updateClinica(this.clinica.id, {
-      nombre: this.clinica.nombre,
-      direccion: this.clinica.direccion,
-      telefono: this.clinica.telefono,
-      correo: this.clinica.correo
-    }).subscribe(
+    this.service.updateClinica(this.clinica.id, this.clinica).subscribe(
       (resp) => { this.router.navigate(['/clinicas']) },
       (err) => console.error(err)
     );
+  }
+
+
+  
+  mostrarLoading(){
+    if(this.id){
+      this.loadservi.presentLoading('Cargando');
+    }
   }
 
 }

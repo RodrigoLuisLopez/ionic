@@ -1,57 +1,39 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-
-export interface Estudiante {
-  id?: string;
-  c_clinica_id: string;
-  c_profesional_id: string;
-  nombre: string;
-  telefono: string;
-  correo: string;
-  localidad: string
-}
-
-
-
+import { env } from 'process';
+import { environment } from 'src/environments/environment';
+import { Estudiante, Estudiantes } from '../interfaces/Estudiantes.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EstudiantesService {
 
-
-  API = 'http://127.0.0.1:8000/api/c_estudiantes';
+  
+  api: string = environment.api;
+  API = `${this.api}/api/c_estudiantes`;
 
   constructor(private http: HttpClient) { }
 
 
 getEss(){
-  return this.http.get<any>(this.API);
+  return this.http.get<Estudiantes>(this.API);
 }
 
 getEs(id:string){
-  return this.http.get<any>(`${this.API}/${id}`);
+  return this.http.get<Estudiante>(`${this.API}/${id}`);
 }
 
-createEs(
-  c_clinica_id: string,
-  c_profesional_id: string,
-  nombre: string,
-  telefono: string,
-  correo: string,
-  localidad: string)
-  {
-  return this.http.post<any>(this.API, {
-    c_clinica_id, c_profesional_id, nombre, telefono, correo, localidad});
+createEs(estudiante:Estudiante){
+  return this.http.post<Estudiante>(this.API, estudiante);
+}
+
+updateEs(id, estudiante : Estudiante){
+  return this.http.put<Estudiante>(`${this.API}/${id}`, estudiante);
 }
 
 deleteEs(id:string){
-  return this.http.delete<any>(`${this.API}/${id}`);
-}
-
-updateEs(id:string, tipo : Estudiante){
-  return this.http.put<any>(`${this.API}/${id}`, tipo);
+  return this.http.delete<Estudiante>(`${this.API}/${id}`);
 }
 
 }

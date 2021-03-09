@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Clinica } from 'src/app/interfaces/Clinicas.interface';
 import { ClinicasService } from 'src/app/servicios/clinicas.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
 
 @Component({
   selector: 'app-clinicas',
@@ -9,27 +11,32 @@ import { ClinicasService } from 'src/app/servicios/clinicas.service';
   styleUrls: ['./clinicas.page.scss'],
 })
 export class ClinicasPage implements OnInit {
-
-  
   constructor(
     public http : HttpClient,
     private service : ClinicasService,
-    private alertController :AlertController
+    private alertController :AlertController,
+    private loadservi: LoadingService
   ) { }
 
+  
+  clinicas : Clinica[];
+
   ngOnInit() {
-    this.getClinicas();
   }
 
   ionViewWillEnter(){
+    this.mostrarloading();
     this.getClinicas();
   }
   
-  clinicas : any=[];
 
   getClinicas(){
 
-    this.service.getClinicas().subscribe(resp => {console.log(resp.data); this.clinicas = resp.data;});
+    this.service.getClinicas().subscribe(resp => {
+      console.log(resp.data); 
+      this.clinicas = resp.data;
+      this.loadservi.loading.dismiss(); 
+    });
   }
 
   async deleteClinica(id){
@@ -43,7 +50,7 @@ export class ClinicasPage implements OnInit {
         handler: () =>{
           this.service.deleteClinica(id).subscribe(
             (resp) => {
-              this.getClinicas();
+              this.ionViewWillEnter();
             }, 
             (err) => console.error(err)
             );
@@ -54,5 +61,13 @@ export class ClinicasPage implements OnInit {
 
     await alert.present();
   }
+
+
+
+  mostrarloading(){
+    this.loadservi.presentLoading('Cargando');
+  }
+
+
 
 }

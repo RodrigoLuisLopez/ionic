@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Estado } from 'src/app/interfaces/Estados.interface';
 import { EstadosService } from 'src/app/servicios/estados.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
 
 @Component({
   selector: 'app-estados',
@@ -9,27 +11,30 @@ import { EstadosService } from 'src/app/servicios/estados.service';
   styleUrls: ['./estados.page.scss'],
 })
 export class EstadosPage implements OnInit {
-
-  
   constructor(
     public http : HttpClient,
     private service : EstadosService,
-    private alertController :AlertController
+    private alertController :AlertController, 
+    private loadservi: LoadingService
   ) { }
 
+  estados : Estado[];
+
   ngOnInit() {
-    this.getEstados();
   }
 
   ionViewWillEnter(){
+    this.mostrarloading();
     this.getEstados();
   }
-  
-  estados : any=[];
 
   getEstados(){
 
-    this.service.getEstados().subscribe(resp => {console.log(resp.data); this.estados = resp.data;});
+    this.service.getEstados().subscribe(resp =>{
+      console.log(resp.data); 
+      this.estados = resp.data;
+      this.loadservi.loading.dismiss(); 
+    });
   }
 
   async deleteEstado(id){
@@ -43,7 +48,7 @@ export class EstadosPage implements OnInit {
         handler: () =>{
           this.service.deleteEstado(id).subscribe(
             (resp) => {
-              this.getEstados();
+              this.ionViewWillEnter();
             }, 
             (err) => console.error(err)
             );
@@ -53,6 +58,11 @@ export class EstadosPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+
+  mostrarloading(){
+    this.loadservi.presentLoading('Cargando');
   }
 
 }

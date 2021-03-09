@@ -1,6 +1,9 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { TiposService, Tipo } from 'src/app/servicios/tipos.service';
+import { TiposService} from 'src/app/servicios/tipos.service';
 import { Router, ActivatedRoute } from '@angular/router'
+import { Tipo } from 'src/app/interfaces/Tipos.interface';
+import { Observable } from 'rxjs';
+import { LoadingService } from 'src/app/servicios/loading.service';
 
 
 @Component({
@@ -9,28 +12,54 @@ import { Router, ActivatedRoute } from '@angular/router'
   styleUrls: ['./show.page.scss'],
 })
 
+
 export class ShowPage implements OnInit {
-
-  tipo: any =[];
-  
-
   constructor(
     private tipoService: TiposService,
     private router: Router,
-    private activateRoute: ActivatedRoute) { }
+    private activateRoute: ActivatedRoute,
+    private loadserv: LoadingService
+    ) { }
+    
+
+  //tipo : Observable<Tipo>;
+  tipo : Tipo;
+  id: string = this.activateRoute.snapshot.paramMap.get('tipoid');
 
   ngOnInit() {
-    this.activateRoute.paramMap.subscribe((paramMap) => {
-      if (paramMap.get('tipoid')) {
-        this.tipoService
-          .getTipo(paramMap.get('tipoid'))
-          .subscribe((res) => {
-            this.tipo = res.data;
-          });
 
-      }
-    })
   }
+
+
+
+  ionViewWillEnter() {
+    this.mostrarloading();
+    this.show();
+  }
+  
+
+  show(){
+    
+    /* this.tipo = this.tipoService.getTipo(this.id);
+    console.log(this.tipo); */
+    
+    this.tipoService.getTipo(this.id).subscribe(res=>{
+      console.log(res);
+      this.tipo = res;
+      this.loadserv.loading.dismiss();
+    });
+  }
+
+
+  mostrarloading(){
+    this.loadserv.presentLoading('Cargando');
+  }
+  
+
+  //ionViewDidEnter(){this.show();}
+  //ionViewWillLeave(){this.show();}
+  //ionViewDidLeave(){this.show();}
+
 
 
 }

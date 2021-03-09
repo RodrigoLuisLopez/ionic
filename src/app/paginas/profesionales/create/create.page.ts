@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProfesionalesService, Profesional } from 'src/app/servicios/profesionales.service';
+import { Profesional } from 'src/app/interfaces/Profesionales.interface';
+import { LoadingService } from 'src/app/servicios/loading.service';
+import { ProfesionalesService} from 'src/app/servicios/profesionales.service';
 
 @Component({
   selector: 'app-create',
@@ -8,30 +10,34 @@ import { ProfesionalesService, Profesional } from 'src/app/servicios/profesional
   styleUrls: ['./create.page.scss'],
 })
 export class CreatePage implements OnInit {
-  editing = false;
-
-  profesional: Profesional = {
-    c_clinica_id: '',
-    nombre: '',
-    telefono: '',
-    correo: '',
-    localidad: ''
-  }
-
   constructor(
     private service: ProfesionalesService,
     private router: Router,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private loadservi: LoadingService
   ) { }
 
+  editing = false;
+  profesional: Profesional = {};
+  
+  id: string = this.activateRoute.snapshot.paramMap.get('proid');
+
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.mostrarLoading();
+    this.verDatos();
+  }
+
+
+  verDatos() {
     this.activateRoute.paramMap.subscribe((paramMap) => {
-      if (paramMap.get('proid')) {
+      if (this.id) {
         this.editing = true;
-        this.service
-          .getProfesional(paramMap.get('proid'))
-          .subscribe((res) => {
-            this.profesional = res.data;
+        this.service.getProfesional(this.id).subscribe((res) => {
+            this.profesional = res;
+            this.loadservi.loading.dismiss();
           });
 
       }
@@ -39,11 +45,7 @@ export class CreatePage implements OnInit {
   }
 
   saveProfesional() {
-    this.service.createProfesional(this.profesional.c_clinica_id,
-      this.profesional.nombre, 
-      this.profesional.telefono,
-      this.profesional.correo,
-      this.profesional.localidad).subscribe(
+    this.service.createProfesional(this.profesional).subscribe(
       (resp) => {
         this.router.navigate(['/profesionales']);
       },
@@ -52,16 +54,17 @@ export class CreatePage implements OnInit {
   }
 
   updateProfesional() {
-    this.service.updateProfesional(this.profesional.id, {
-      c_clinica_id:this.profesional.c_clinica_id,
-      nombre:this.profesional.nombre, 
-      telefono:this.profesional.telefono,
-      correo:this.profesional.correo,
-      localidad:this.profesional.localidad
-    }).subscribe(
+    this.service.updateProfesional(this.profesional.id,this.profesional).subscribe(
       (resp) => { this.router.navigate(['/profesionales']) },
       (err) => console.error(err)
     );
+  }
+
+  
+  mostrarLoading(){
+    if(this.id){
+      this.loadservi.presentLoading('Cargando');
+    }
   }
 
 }

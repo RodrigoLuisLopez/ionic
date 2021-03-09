@@ -1,44 +1,53 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { Tipos, Tipo } from '../interfaces/Tipos.interface';
 
-
-export interface Tipo {
-  id?: string;
-  nombre: string;
-  descripcion: string
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class TiposService {
 
-  API = 'http://127.0.0.1:8000/api/c_tipos';
+  api: string = environment.api;
+  API = `${this.api}/api/c_tipos`;
 
   constructor(private http: HttpClient) { }
 
 
-getTipos(){
-  return this.http.get<any>(this.API);
-}
+  getTipos() {
+    return this.http.get<Tipos>(this.API);
+  }
 
-getTipo(id:string){
-  return this.http.get<any>(`${this.API}/${id}`);
-}
+  getTipo(id: string) {
+    return this.http.get<Tipo>(`${this.API}/${id}`);
+  }
 
-createTipo(nombre:string, descripcion:string){
-  return this.http.post<any>(this.API, {
-    nombre, descripcion
-  });
-}
+  createTipo(tipo: Tipo) {
+    return this.http.post<Tipo>(this.API, tipo);
+  }
 
-deleteTipo(id:string){
-  return this.http.delete<any>(`${this.API}/${id}`);
-}
+  updateTipo(id, tipo: Tipo) {
+    return this.http.put<Tipo>(`${this.API}/${id}`, tipo);
+  }
 
-updateTipo(id:string, tipo : Tipo){
-  return this.http.put<any>(`${this.API}/${id}`, tipo);
-}
+  deleteTipo(id: string) {
+    return this.http.delete<Tipo>(`${this.API}/${id}`);
+  }
+
+
+
+
+  /* show(id:string): Promise<Tipo>{
+  
+    return new Promise(resolve=>{
+      this.http.get<Tipo>(`${this.API}/${id}`).subscribe(r=>{       
+        resolve(r);
+      });
+    });
+     
+  } */
+
 
 }
 

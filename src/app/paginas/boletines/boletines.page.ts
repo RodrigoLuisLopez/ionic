@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Tipo } from 'src/app/interfaces/Tipos.interface';
 import { BoletinesService } from 'src/app/servicios/boletines.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
 
 @Component({
   selector: 'app-boletines',
@@ -14,22 +16,29 @@ export class BoletinesPage implements OnInit {
   constructor(
     public http : HttpClient,
     private service : BoletinesService,
-    private alertController :AlertController
+    private alertController :AlertController, 
+    private loadservi: LoadingService
   ) { }
 
+  
+  boletines : Tipo[];
+
   ngOnInit() {
-    this.getBol();
   }
 
   ionViewWillEnter(){
+    this.mostrarloading();
     this.getBol();
   }
   
-  boletines : any=[];
 
   getBol(){
 
-    this.service.getBols().subscribe(resp => {console.log(resp.data); this.boletines = resp.data;});
+    this.service.getBols().subscribe(resp => {
+      console.log(resp.data); 
+      this.boletines = resp.data;
+      this.loadservi.loading.dismiss(); 
+    });
   }
 
   async deleteBol(id){
@@ -43,7 +52,7 @@ export class BoletinesPage implements OnInit {
         handler: () =>{
           this.service.deleteBol(id).subscribe(
             (resp) => {
-              this.getBol();
+              this.ionViewWillEnter();
             }, 
             (err) => console.error(err)
             );
@@ -53,6 +62,11 @@ export class BoletinesPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+
+  mostrarloading(){
+    this.loadservi.presentLoading('Cargando');
   }
 
 }

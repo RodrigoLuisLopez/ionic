@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Boletin } from 'src/app/interfaces/Boletines.interface';
 import { BoletinesService } from 'src/app/servicios/boletines.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
 
 @Component({
   selector: 'app-show',
@@ -9,24 +11,44 @@ import { BoletinesService } from 'src/app/servicios/boletines.service';
 })
 export class ShowPage implements OnInit {
   
-  boletin: any =[];
-  
-
   constructor(
     private service: BoletinesService,
     private router: Router,
-    private activateRoute: ActivatedRoute) { }
+    private activateRoute: ActivatedRoute,
+    private loadserv: LoadingService) { }
+
+  boletin: Boletin;
+  id: string = this.activateRoute.snapshot.paramMap.get('id');
+
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.show();
+    this.mostrarloading();
+  }
+
+
+  show(){
+    
     this.activateRoute.paramMap.subscribe((paramMap) => {
-      if (paramMap.get('id')) {
-        this.service
-          .getBol(paramMap.get('id'))
-          .subscribe((res) => {
-            this.boletin = res.data;
+      if (this.id) {
+        this.service.getBol(this.id).subscribe((res) => {
+            this.boletin = res;
+            this.loadserv.loading.dismiss();
           });
 
       }
     })
+
   }
+
+  mostrarloading(){
+    this.loadserv.presentLoading('Cargando');
+  }
+ 
+
+
+
 }

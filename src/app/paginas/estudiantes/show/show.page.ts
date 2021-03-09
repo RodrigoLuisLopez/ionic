@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Estudiante, EstudiantesService } from 'src/app/servicios/estudiantes.service';
+import { Estudiante } from 'src/app/interfaces/Estudiantes.interface';
+import { EstudiantesService } from 'src/app/servicios/estudiantes.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
 
 @Component({
   selector: 'app-show',
@@ -8,27 +10,40 @@ import { Estudiante, EstudiantesService } from 'src/app/servicios/estudiantes.se
   styleUrls: ['./show.page.scss'],
 })
 export class ShowPage implements OnInit {
-
-  es: any =[];
-  
-
   constructor(
     private service: EstudiantesService,
     private router: Router,
-    private activateRoute: ActivatedRoute) { }
+    private activateRoute: ActivatedRoute,
+    private loadservi: LoadingService
+    ) { }
+
+    
+  estudiante: Estudiante;
+  id: string = this.activateRoute.snapshot.paramMap.get('id');
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.mostrarloading();
+    this.show();
+  }
+
+  show() {
     this.activateRoute.paramMap.subscribe((paramMap) => {
-      if (paramMap.get('id')) {
-        this.service
-          .getEs(paramMap.get('id'))
-          .subscribe((res) => {
-            this.es = res.data;
+      if (this.id) {
+        this.service.getEs(this.id).subscribe((res) => {
+            this.estudiante = res;
+            this.loadservi.loading.dismiss(); 
           });
 
       }
     })
   }
 
+
+  mostrarloading(){
+    this.loadservi.presentLoading('Cargando');
+  }
 
 }

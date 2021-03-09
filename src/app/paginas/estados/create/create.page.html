@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tipos"></ion-back-button>
+      <ion-back-button defaultHref="/estados"></ion-back-button>
     </ion-buttons>
     <ion-title> {{ editing ? 'Editar' : 'Nuevo' }} Estado</ion-title>
   </ion-toolbar>
@@ -20,15 +20,15 @@
             <ion-card-title>{{ editing ? 'Editar' : ' Nuevo' }} Estado</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-item>
+            <ion-item *ngIf="estado">
               <ion-label position="floating">Nombre</ion-label>
               <ion-input [(ngModel)]="estado.nombre"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="estado">
               <ion-label position="floating">Descripcion</ion-label>
               <ion-input [(ngModel)]="estado.descripcion"></ion-input>
             </ion-item>
-            <ion-button color="primary" expand="full" (click)="editing ? updateEstado(nombre, descripcion) : saveEstado()">
+            <ion-button color="primary" expand="full" (click)="editing ? updateEstado() : saveEstado()">
               {{ editing ? 'Editar' : 'Guardar' }}
             </ion-button>
           </ion-card-content>

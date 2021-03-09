@@ -16,12 +16,12 @@
 </ion-header>
 
 <ion-content>
-
+  
   <ion-grid>
 
-    <ion-row>
+    <ion-row *ngIf="tipos" >
 
-
+ 
       <ion-col *ngFor="let tipo of tipos" size="12" size-md="3">
 
         <ion-card>

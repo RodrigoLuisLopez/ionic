@@ -19,27 +19,27 @@
             <ion-card-title>{{ editing ? 'Editar' : ' Nuevo' }} Boletines</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-item>
+            <ion-item *ngIf="boletin">
               <ion-label position="floating">Boletin</ion-label>
               <ion-input [(ngModel)]="boletin.titulo"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="boletin">
               <ion-label position="floating">Subtitulo</ion-label>
               <ion-input [(ngModel)]="boletin.subtitulo"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="boletin">
               <ion-label position="floating">Contenido</ion-label>
               <ion-input [(ngModel)]="boletin.contenido"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="boletin">
               <ion-label position="floating">Autor</ion-label>
               <ion-input [(ngModel)]="boletin.autor"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="boletin">
               <ion-label position="floating">Profesional</ion-label>
               <ion-input [(ngModel)]="boletin.c_profesional_id"></ion-input>
             </ion-item>
-            <ion-button color="primary" expand="full" (click)="editing ? updateBol(titulo, subtitulo, contenido, autor, c_profesional_id) : saveBol()">
+            <ion-button color="primary" expand="full" (click)="editing ? updateBol() : saveBol()">
               {{ editing ? 'Editar' : 'Guardar' }}
             </ion-button>
           </ion-card-content>

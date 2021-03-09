@@ -19,23 +19,23 @@
             <ion-card-title>{{ editing ? 'Editar' : ' Nuevo' }} Usuario</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-item>
+            <ion-item *ngIf="usuario">
             <ion-label position="floating">Tipo</ion-label>
             <ion-input [(ngModel)]="usuario.c_tipo_id"></ion-input>
           </ion-item>
-            <ion-item>
+            <ion-item *ngIf="usuario">
               <ion-label position="floating">Usuario</ion-label>
               <ion-input [(ngModel)]="usuario.nombre"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="usuario">
               <ion-label position="floating">edad</ion-label>
               <ion-input [(ngModel)]="usuario.edad"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="usuario">
               <ion-label position="floating">Localidad</ion-label>
               <ion-input [(ngModel)]="usuario.localidad"></ion-input>
             </ion-item>
-            <ion-button color="primary" expand="full" (click)="editing ? updateUsuario(c_tipo_id,nombre,edad,localidad) : saveUsuario()">
+            <ion-button color="primary" expand="full" (click)="editing ? updateUsuario() : saveUsuario()">
               {{ editing ? 'Editar' : 'Guardar' }}
             </ion-button>
           </ion-card-content>

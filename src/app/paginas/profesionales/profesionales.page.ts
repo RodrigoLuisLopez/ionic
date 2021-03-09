@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Profesional } from 'src/app/interfaces/Profesionales.interface';
+import { LoadingService } from 'src/app/servicios/loading.service';
 import { ProfesionalesService } from 'src/app/servicios/profesionales.service';
 
 @Component({
@@ -9,33 +11,32 @@ import { ProfesionalesService } from 'src/app/servicios/profesionales.service';
   styleUrls: ['./profesionales.page.scss'],
 })
 export class ProfesionalesPage implements OnInit {
-
-  
   constructor(
     public http : HttpClient,
     private service : ProfesionalesService,
-    private alertController :AlertController
+    private alertController :AlertController,
+    private loadservi: LoadingService
   ) { }
 
+  
+  profesionals : Profesional[];
+  
   ngOnInit() {
-    this.getProfesionals();
   }
 
   ionViewWillEnter(){
+    this.mostrarloading();
     this.getProfesionals();
   }
   
-  profesionals : any=[];
-  clinicas : any=[];
 
   getProfesionals(){
 
-    this.service.getProfesionals().subscribe(resp => {console.log(resp.data); this.profesionals = resp.data;});
-  }
-
-  getClinicas(){
-
-    this.service.getClinicas().subscribe(resp => {console.log(resp.data); this.clinicas = resp.data;});
+    this.service.getProfesionals().subscribe(resp => {
+      console.log(resp.data); 
+      this.profesionals = resp.data;
+      this.loadservi.loading.dismiss(); 
+    });
   }
 
   async deleteProfesional(id){
@@ -49,7 +50,7 @@ export class ProfesionalesPage implements OnInit {
         handler: () =>{
           this.service.deleteProfesional(id).subscribe(
             (resp) => {
-              this.getProfesionals();
+              this.ionViewWillEnter();
             }, 
             (err) => console.error(err)
             );
@@ -59,6 +60,10 @@ export class ProfesionalesPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  mostrarloading(){
+    this.loadservi.presentLoading('Cargando');
   }
 
 }

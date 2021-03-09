@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EstudiantesService, Estudiante } from 'src/app/servicios/estudiantes.service';
+import { Estudiante } from 'src/app/interfaces/Estudiantes.interface';
+import { EstudiantesService} from 'src/app/servicios/estudiantes.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
 
 @Component({
   selector: 'app-create',
@@ -8,46 +10,45 @@ import { EstudiantesService, Estudiante } from 'src/app/servicios/estudiantes.se
   styleUrls: ['./create.page.scss'],
 })
 export class CreatePage implements OnInit {
-
-  editing = false;
-
-  estudiante: Estudiante = {
-  c_clinica_id: '',
-  c_profesional_id: '',
-  nombre: '',
-  telefono: '',
-  correo: '',
-  localidad: ''
-  }
-
   constructor(
     private service: EstudiantesService,
     private router: Router,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private loadservi: LoadingService
   ) { }
 
+
+
+  
+  editing = false;
+  estudiante: Estudiante = { };
+  id: string = this.activateRoute.snapshot.paramMap.get('id');
+
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.mostrarLoading();
+    this.verDatos();
+  }
+
+
+  verDatos() {
     this.activateRoute.paramMap.subscribe((paramMap) => {
-      if (paramMap.get('id')) {
+      if (this.id) {
         this.editing = true;
-        this.service
-          .getEs(paramMap.get('id'))
-          .subscribe((res) => {
-            this.estudiante = res.data;
+        this.service.getEs(this.id).subscribe((res) => {
+            this.estudiante = res;
+            this.loadservi.loading.dismiss();
           });
 
       }
     })
   }
+  
 
   saveEs() {
-    this.service.createEs(
-      this.estudiante.c_clinica_id,
-      this.estudiante.c_profesional_id,
-      this.estudiante.nombre, 
-      this.estudiante.telefono,
-      this.estudiante.correo,
-      this.estudiante.localidad).subscribe(
+    this.service.createEs( this.estudiante).subscribe(
       (resp) => {
         this.router.navigate(['/estudiantes']);
       },
@@ -56,17 +57,18 @@ export class CreatePage implements OnInit {
   }
 
   updateEs() {
-    this.service.updateEs(this.estudiante.id, {
-      c_clinica_id:this.estudiante.c_clinica_id,
-      c_profesional_id:this.estudiante.c_profesional_id,
-      nombre:this.estudiante.nombre, 
-      telefono:this.estudiante.telefono,
-      correo:this.estudiante.correo,
-      localidad:this.estudiante.localidad
-    }).subscribe(
+    this.service.updateEs(this.estudiante.id, this.estudiante).subscribe(
       (resp) => { this.router.navigate(['/estudiantes']) },
       (err) => console.error(err)
     );
+  }
+
+
+  
+  mostrarLoading(){
+    if(this.id){
+      this.loadservi.presentLoading('Cargando');
+    }
   }
 
 }

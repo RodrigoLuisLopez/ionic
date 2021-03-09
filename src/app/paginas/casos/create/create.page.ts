@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CasosService, Caso } from 'src/app/servicios/casos.service';
+import { Caso } from 'src/app/interfaces/Casos.interface';
+import { CasosService} from 'src/app/servicios/casos.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
 
 @Component({
   selector: 'app-create',
@@ -8,32 +10,34 @@ import { CasosService, Caso } from 'src/app/servicios/casos.service';
   styleUrls: ['./create.page.scss'],
 })
 export class CreatePage implements OnInit {
-
-  editing = false;
-
-  caso: Caso = {
-  nombre: '',
-  descripcion:'',
-  fecha: '',
-  c_profesional_id: '',
-  t_usuario_id: '',
-  c_estado_id: ''
-  }
-
   constructor(
     private service: CasosService,
     private router: Router,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private loadservi: LoadingService
   ) { }
 
+  
+  
+  editing = false;
+  caso: Caso = { };
+  id: string = this.activateRoute.snapshot.paramMap.get('id');
+
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.mostrarLoading();
+    this.verDatos();
+  }
+
+  verDatos() {
     this.activateRoute.paramMap.subscribe((paramMap) => {
-      if (paramMap.get('id')) {
+      if (this.id) {
         this.editing = true;
-        this.service
-          .getca(paramMap.get('id'))
-          .subscribe((res) => {
-            this.caso = res.data;
+        this.service.getca(this.id).subscribe((res) => {
+            this.caso = res;
+            this.loadservi.loading.dismiss();
           });
 
       }
@@ -41,13 +45,7 @@ export class CreatePage implements OnInit {
   }
 
   saveCa() {
-    this.service.createCa(
-      this.caso.nombre,
-      this.caso.descripcion,
-      this.caso.fecha,
-      this.caso.c_profesional_id,
-      this.caso.t_usuario_id,
-      this.caso.c_estado_id).subscribe(
+    this.service.createCa(this.caso).subscribe(
       (resp) => {
         this.router.navigate(['/casos']);
       },
@@ -56,17 +54,18 @@ export class CreatePage implements OnInit {
   }
 
   updateCa() {
-    this.service.updateCa(this.caso.id, {
-      nombre:this.caso.nombre,
-      descripcion:this.caso.descripcion,
-      fecha:this.caso.fecha,
-      c_profesional_id:this.caso.c_profesional_id,
-      t_usuario_id:this.caso.t_usuario_id,
-      c_estado_id:this.caso.c_estado_id
-    }).subscribe(
+    this.service.updateCa(this.caso.id, this.caso).subscribe(
       (resp) => { this.router.navigate(['/casos']) },
       (err) => console.error(err)
     );
   }
+
+  
+  mostrarLoading(){
+    if(this.id){
+      this.loadservi.presentLoading('Cargando');
+    }
+  }
+
 
 }

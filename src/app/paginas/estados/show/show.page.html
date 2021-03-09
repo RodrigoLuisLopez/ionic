@@ -9,7 +9,7 @@
 
 <ion-content>
 
-  <ion-card>
+  <ion-card *ngIf="estado"> 
     <ion-card-header>
       <ion-card-subtitle>{{ estado.id }}</ion-card-subtitle>
       <ion-card-title>{{ estado.nombre }}</ion-card-title>

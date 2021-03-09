@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Estudiante } from 'src/app/interfaces/Estudiantes.interface';
 import { EstudiantesService } from 'src/app/servicios/estudiantes.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
 
 @Component({
   selector: 'app-estudiantes',
@@ -14,22 +16,29 @@ export class EstudiantesPage implements OnInit {
   constructor(
     public http : HttpClient,
     private service : EstudiantesService,
-    private alertController :AlertController
+    private alertController :AlertController,
+    private loadservi: LoadingService
   ) { }
 
+  
+  estudiante : Estudiante[];
+
   ngOnInit() {
-    this.getEs();
   }
 
   ionViewWillEnter(){
+    this.mostrarloading();
     this.getEs();
   }
   
-  es : any=[];
 
   getEs(){
 
-    this.service.getEss().subscribe(resp => {console.log(resp.data); this.es = resp.data;});
+    this.service.getEss().subscribe(resp => {
+      console.log(resp.data); 
+      this.estudiante = resp.data;
+      this.loadservi.loading.dismiss(); 
+    });
   }
 
   async deleteEs(id){
@@ -43,7 +52,7 @@ export class EstudiantesPage implements OnInit {
         handler: () =>{
           this.service.deleteEs(id).subscribe(
             (resp) => {
-              this.getEs();
+              this.ionViewWillEnter();
             }, 
             (err) => console.error(err)
             );
@@ -54,5 +63,11 @@ export class EstudiantesPage implements OnInit {
 
     await alert.present();
   }
+
+
+  mostrarloading(){
+    this.loadservi.presentLoading('Cargando');
+  }
+
 
 }

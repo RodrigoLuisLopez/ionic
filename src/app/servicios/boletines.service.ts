@@ -1,53 +1,37 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-export interface Boletin {
-  id?: string;
-  c_profesional_id: string;
-  titulo: string;
-  subtitulo: string;
-  contenido: string;
-  autor: string
-}
-
-
-
+import { environment } from 'src/environments/environment';
+import { Boletin, Boletins } from '../interfaces/Boletines.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoletinesService {
 
-
-  API = 'http://127.0.0.1:8000/api/c_boletins';
+  api: string = environment.api;
+  API = `${this.api}/api/c_boletins`;
 
   constructor(private http: HttpClient) { }
 
 
 getBols(){
-  return this.http.get<any>(this.API);
+  return this.http.get<Boletins>(this.API);
 }
 
 getBol(id:string){
-  return this.http.get<any>(`${this.API}/${id}`);
+  return this.http.get<Boletin>(`${this.API}/${id}`);
 }
 
-createBol(
-  c_profesional_id: string,
-  titulo: string,
-  subtitulo: string,
-  contenido: string,
-  autor: string)
-  {
-  return this.http.post<any>(this.API, {c_profesional_id, titulo, subtitulo, contenido, autor});
+createBol(boletin : Boletin){
+  return this.http.post<Boletin>(this.API, boletin);
+}
+
+updateBol(id, boletin : Boletin){
+  return this.http.put<Boletin>(`${this.API}/${id}`, boletin);
 }
 
 deleteBol(id:string){
-  return this.http.delete<any>(`${this.API}/${id}`);
-}
-
-updateBol(id:string, tipo : Boletin){
-  return this.http.put<any>(`${this.API}/${id}`, tipo);
+  return this.http.delete<Boletin>(`${this.API}/${id}`);
 }
 
 }

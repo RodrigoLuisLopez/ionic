@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/estudiantes"></ion-back-button>
     </ion-buttons>
-    <ion-title> {{ editing ? 'Editar' : 'Nuevo' }} Estudaintes</ion-title>
+    <ion-title> {{ editing ? 'Editar' : 'Nuevo' }} Estudiantes</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -19,31 +19,31 @@
             <ion-card-title>{{ editing ? 'Editar' : ' Nuevo' }} Estudiantes</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-item>
+            <ion-item *ngIf="estudiante">
               <ion-label position="floating">Clinica</ion-label>
               <ion-input [(ngModel)]="estudiante.c_clinica_id"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="estudiante">
               <ion-label position="floating">Profesional</ion-label>
               <ion-input [(ngModel)]="estudiante.c_profesional_id"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="estudiante">
               <ion-label position="floating">Estudiante</ion-label>
               <ion-input [(ngModel)]="estudiante.nombre"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="estudiante">
               <ion-label position="floating">Telefono</ion-label>
               <ion-input [(ngModel)]="estudiante.telefono"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="estudiante">
               <ion-label position="floating">Correo</ion-label>
               <ion-input [(ngModel)]="estudiante.correo"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="estudiante">
               <ion-label position="floating">Localidad</ion-label>
               <ion-input [(ngModel)]="estudiante.localidad"></ion-input>
             </ion-item>
-            <ion-button color="primary" expand="full" (click)="editing ? updateEs(c_clinica_id, c_profesional_id, nombre, telefono, correo,localidad) : saveEs()">
+            <ion-button color="primary" expand="full" (click)="editing ? updateEs() : saveEs()">
               {{ editing ? 'Editar' : 'Guardar' }}
             </ion-button>
           </ion-card-content>

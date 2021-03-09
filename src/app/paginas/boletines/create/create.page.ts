@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BoletinesService, Boletin } from 'src/app/servicios/boletines.service';
+import { Boletin } from 'src/app/interfaces/Boletines.interface';
+import { BoletinesService} from 'src/app/servicios/boletines.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
 
 @Component({
   selector: 'app-create',
@@ -8,44 +10,44 @@ import { BoletinesService, Boletin } from 'src/app/servicios/boletines.service';
   styleUrls: ['./create.page.scss'],
 })
 export class CreatePage implements OnInit {
-
-  editing = false;
-
-  boletin: Boletin = {
-    c_profesional_id: '',
-    titulo: '',
-    subtitulo: '',
-    contenido: '',
-    autor: '',
-  }
-
   constructor(
     private service: BoletinesService,
     private router: Router,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private loadservice: LoadingService
   ) { }
 
+    
+  editing = false;
+  boletin: Boletin = {};
+  id: string = this.activateRoute.snapshot.paramMap.get('id');
+
+
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.mostrarLoading();
+    this.verdatos();
+  }
+
+  verdatos(){
+    
     this.activateRoute.paramMap.subscribe((paramMap) => {
-      if (paramMap.get('id')) {
+      if (this.id) {
         this.editing = true;
-        this.service
-          .getBol(paramMap.get('id'))
-          .subscribe((res) => {
-            this.boletin = res.data;
+        this.service.getBol(this.id).subscribe((res) => {
+            this.boletin = res;
+            this.loadservice.loading.dismiss();
           });
 
       }
     })
+
   }
 
   saveBol() {
-    this.service.createBol(
-      this.boletin.c_profesional_id,
-      this.boletin.titulo, 
-      this.boletin.subtitulo,
-      this.boletin.contenido,
-      this.boletin.autor).subscribe(
+    this.service.createBol(this.boletin).subscribe(
       (resp) => {
         this.router.navigate(['/boletines']);
       },
@@ -54,16 +56,16 @@ export class CreatePage implements OnInit {
   }
 
   updateBol() {
-    this.service.updateBol(this.boletin.id, {
-      c_profesional_id:this.boletin.c_profesional_id,
-      titulo:this.boletin.titulo, 
-      subtitulo:this.boletin.subtitulo,
-      contenido:this.boletin.contenido,
-      autor:this.boletin.autor
-    }).subscribe(
+    this.service.updateBol(this.boletin.id, this.boletin).subscribe(
       (resp) => { this.router.navigate(['/boletines']) },
       (err) => console.error(err)
     );
+  }
+
+  mostrarLoading(){
+    if(this.id){
+      this.loadservice.presentLoading('Cargando');
+    }
   }
 
 }

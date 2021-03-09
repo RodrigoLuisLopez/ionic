@@ -1,16 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-
-export interface Clinica {
-  id?: string;
-  nombre: string;
-  direccion: string;
-  telefono: string;
-  correo: string
-}
-
-
+import { environment } from 'src/environments/environment';
+import { Clinica, Clinicas } from '../interfaces/Clinicas.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -19,36 +10,30 @@ export interface Clinica {
 
 export class ClinicasService {
 
-  API = 'http://127.0.0.1:8000/api/c_clinicas';
+  api: string = environment.api;
+  API = `${this.api}/api/c_clinicas`;
 
   constructor(private http: HttpClient) { }
 
 
 getClinicas(){
-  return this.http.get<any>(this.API);
+  return this.http.get<Clinicas>(this.API);
 }
 
 getClinica(id:string){
-  return this.http.get<any>(`${this.API}/${id}`);
+  return this.http.get<Clinica>(`${this.API}/${id}`);
 }
 
-createClinica(
-  nombre: string,
-  direccion: string,
-  telefono: string,
-  correo: string)
-  {
-  return this.http.post<any>(this.API, {
-    nombre, direccion, telefono, correo
-  });
+createClinica(clinica : Clinica){
+  return this.http.post<Clinica>(this.API, clinica);
+}
+
+updateClinica(id, clinica : Clinica){
+  return this.http.put<Clinica>(`${this.API}/${id}`, clinica);
 }
 
 deleteClinica(id:string){
   return this.http.delete<any>(`${this.API}/${id}`);
-}
-
-updateClinica(id:string, tipo : Clinica){
-  return this.http.put<any>(`${this.API}/${id}`, tipo);
 }
 
 }

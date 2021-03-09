@@ -9,7 +9,7 @@
 
 <ion-content>
   
-  <ion-card>
+  <ion-card *ngIf="usuario">
     <ion-card-header>
       <ion-card-title>{{ usuario.nombre }}</ion-card-title>
     </ion-card-header>

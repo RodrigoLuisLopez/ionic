@@ -20,15 +20,19 @@
             <ion-card-title>{{ editing ? 'Editar' : ' Nuevo' }} Tipo</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-item>
+
+            
+            <ion-item *ngIf="tipo">
               <ion-label position="floating">Nombre</ion-label>
               <ion-input [(ngModel)]="tipo.nombre"></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="tipo">
               <ion-label position="floating">Descripcion</ion-label>
               <ion-input [(ngModel)]="tipo.descripcion"></ion-input>
             </ion-item>
-            <ion-button color="primary" expand="full" (click)="editing ? updateTipo(nombre, descripcion) : saveTipo()">
+            
+            
+            <ion-button color="primary" expand="full" (click)="editing ? updateTipo() : saveTipo()">
               {{ editing ? 'Editar' : 'Guardar' }}
             </ion-button>
           </ion-card-content>
