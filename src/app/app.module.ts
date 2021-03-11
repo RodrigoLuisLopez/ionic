@@ -9,8 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { HttpClientModule } from '@angular/common/http';
 import { MenuComponent } from './components/menu/menu.component';
-
 import { IonicStorageModule } from '@ionic/storage';
+
 
 @NgModule({
 
@@ -36,7 +36,7 @@ import { IonicStorageModule } from '@ionic/storage';
     IonicModule.forRoot(), 
     AppRoutingModule, 
     HttpClientModule,
-    IonicStorageModule.forRoot()  
+    IonicStorageModule.forRoot()
   ],
 
 
